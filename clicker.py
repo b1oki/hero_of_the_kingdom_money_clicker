@@ -1,12 +1,14 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
+import logging
+import time
+from pynput.mouse import Button, Controller
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 
 def get_mouse_position(output=False):
-    from pynput.mouse import Controller
     mouse = Controller()
     position = mouse.position
     if output:
@@ -14,17 +16,15 @@ def get_mouse_position(output=False):
     return position
 
 
-def mouse_click(x, y, x_offset=0, y_offset=0, click_delay=0.0):
-    import time
-    from pynput.mouse import Button, Controller
+def mouse_click(x, y, x_offset=0, y_offset=0, delay=0.0):
     mouse = Controller()
     mouse.position = (x + x_offset, y + y_offset)
-    # print('click', mouse.position)
+    print('click', mouse.position)
     time.sleep(0.1)
     mouse.press(Button.left)
     time.sleep(0.1)
     mouse.release(Button.left)
-    time.sleep(click_delay)
+    time.sleep(delay)
     if get_mouse_position() != (x + x_offset, y + y_offset):
         print('Exit because mouse moved')
         exit(1)
@@ -37,23 +37,25 @@ def clicker():
     # clean_position = (23, 23)  # fullscreen
     clean_position = (215, 150)
     print('Activate game')
-    mouse_click(*clean_position, click_delay=0.7, x_offset=x_offset)
-    poision_buy_price = 85
-    poision_sell_price = 90
+    mouse_click(*clean_position, delay=0.7, x_offset=x_offset)
+    bottle_buy_price = 85
+    bottle_sell_price = 90
     cash_value = 5085
+    print('initial cash value', cash_value)
     while True:
         if get_mouse_position() == (0, 0):
             print('Exit because mouse position (0, 0)')
             break
-        poision_number = cash_value // poision_buy_price
-        print('poision_number', poision_number)
-        cash_value = cash_value + poision_number * (poision_sell_price - poision_buy_price)
+        bottle_number = cash_value // bottle_buy_price
+        print('bottle_number', bottle_number)
+        cash_value = cash_value + bottle_number * \
+            (bottle_sell_price - bottle_buy_price)
         print('new cash value', cash_value)
-        hero_of_the_kingdom_trade_iteration(poision_number)
+        hero_of_the_kingdom_trade_iteration(bottle_number)
     print('clicker finish')
 
 
-def hero_of_the_kingdom_trade_iteration(poision_number):
+def hero_of_the_kingdom_trade_iteration(bottle_number):
     print('Trade iteration start')
     x_offset = 0  # 1920x1080
     # x_offset = 1920  # 3840x1080
@@ -62,47 +64,47 @@ def hero_of_the_kingdom_trade_iteration(poision_number):
         map_city_position = (410, 450)  # fullscreen
         map_secret_glade_position = (1310, 145)  # fullscreen
         bootlegger_position = (1595, 220)  # fullscreen
-        bootlegger_buy_poision_position = (1535, 340)  # fullscreen
+        bootlegger_buy_bottle_position = (1535, 340)  # fullscreen
         bootlegger_trade_confirm_position = (1550, 600)  # fullscreen
         hunter_position = (485, 495)  # fullscreen
-        hunter_sell_poision_position = (675, 465)  # fullscreen
+        hunter_sell_bottle_position = (675, 465)  # fullscreen
         hunter_trade_confirm_position = (430, 735)  # fullscreen
     else:
         map_position = (250, 195)
         map_city_position = (525, 490)
         map_secret_glade_position = (1240, 255)
         bootlegger_position = (1470, 305)
-        bootlegger_buy_poision_position = (1415, 400)
+        bootlegger_buy_bottle_position = (1415, 400)
         bootlegger_trade_confirm_position = (1430, 620)
         hunter_position = (580, 525)
-        hunter_sell_poision_position = (735, 505)
+        hunter_sell_bottle_position = (735, 505)
         hunter_trade_confirm_position = (535, 720)
     print('Open map')
-    mouse_click(*map_position, click_delay=2, x_offset=x_offset)
+    mouse_click(*map_position, delay=2, x_offset=x_offset)
     print('Travel to city')
-    mouse_click(*map_city_position, click_delay=1.7, x_offset=x_offset)
+    mouse_click(*map_city_position, delay=1.7, x_offset=x_offset)
     print('Trade with bootlegger')
-    mouse_click(*bootlegger_position, click_delay=1.7, x_offset=x_offset)
-    print('Buy {} poision'.format(poision_number))
-    for i in range(poision_number):
-        mouse_click(*bootlegger_buy_poision_position, click_delay=0.5, x_offset=x_offset)
+    mouse_click(*bootlegger_position, delay=1.7, x_offset=x_offset)
+    print('Buy {} poision bottles'.format(bottle_number))
+    for i in range(bottle_number):
+        mouse_click(*bootlegger_buy_bottle_position, delay=0.5, x_offset=x_offset)
     print('Confirm trade')
-    mouse_click(*bootlegger_trade_confirm_position, click_delay=0.7, x_offset=x_offset)
+    mouse_click(*bootlegger_trade_confirm_position, delay=0.7, x_offset=x_offset)
     print('Open map')
-    mouse_click(*map_position, click_delay=2, x_offset=x_offset)
+    mouse_click(*map_position, delay=2, x_offset=x_offset)
     print('Travel to glade')
-    mouse_click(*map_secret_glade_position, click_delay=1.7, x_offset=x_offset)
+    mouse_click(*map_secret_glade_position, delay=1.7, x_offset=x_offset)
     print('Trade with hunter')
-    mouse_click(*hunter_position, click_delay=1.7, x_offset=x_offset)
-    print('Sell {} poision'.format(poision_number))
-    for i in range(poision_number):
-        mouse_click(*hunter_sell_poision_position, click_delay=0.5, x_offset=x_offset)
+    mouse_click(*hunter_position, delay=1.7, x_offset=x_offset)
+    print('Sell {} poision bottles'.format(bottle_number))
+    for i in range(bottle_number):
+        mouse_click(*hunter_sell_bottle_position, delay=0.5, x_offset=x_offset)
     print('Confirm trade')
-    mouse_click(*hunter_trade_confirm_position, click_delay=0.7, x_offset=x_offset)
+    mouse_click(*hunter_trade_confirm_position, delay=0.7, x_offset=x_offset)
     print('Trade iteration finish')
 
 
-class MyWindow(Gtk.Window):
+class ClickerWindow(Gtk.Window):
 
     def progressbar_value(self, move=0.1, value=None):
         if value is not None:
@@ -143,8 +145,7 @@ class MyWindow(Gtk.Window):
         get_mouse_position(output=True)
 
 
-
-win = MyWindow()
+win = ClickerWindow()
 win.connect('destroy', Gtk.main_quit)
 win.show_all()
 Gtk.main()
