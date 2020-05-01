@@ -8,6 +8,15 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 
+class Clicker(object):
+    def __init__(self, cash_value: int) -> None:
+        self.logger = logging.getLogger('clicker')
+        self.logger.addHandler(logging.StreamHandler())
+        self.cash_value = cash_value
+
+    def log(self, message: str) -> None:
+        self.logger.info(message)
+
 def get_mouse_position(output=False):
     mouse = Controller()
     position = mouse.position
@@ -30,7 +39,7 @@ def mouse_click(x, y, x_offset=0, y_offset=0, delay=0.0):
         exit(1)
 
 
-def clicker():
+def clicker_process():
     print('clicker start')
     x_offset = 0  # 1920x1080
     # x_offset = 1920  # 3840x1080
