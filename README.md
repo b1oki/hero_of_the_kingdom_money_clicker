@@ -1,2 +1,5 @@
-# hero_of_the_kingdom_money_clicker
-Clicker money assistant for game Hero of the Kingdom
+# About
+Clicker trading poision bottles and making money
+
+# Hero of the Kingdom
+https://store.steampowered.com/app/259550/Hero_of_the_Kingdom/
